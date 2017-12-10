@@ -1,0 +1,10 @@
+Package: gdlm
+Title: Build linear models through gradient descent 
+Version: 0.0.0.9000
+Authors@R: person("Karl", "Holub", email = "karljholub@gmail.com", role = c("aut", "cre"))
+Description: gdlm builds linear models through the use of gradient descent methods. Its goal is to give flexibility to the user to specify arbitrary cost functions for regressions, while also providing ease of use & analysis associated with the stats::glm family of regressions. Existing libraries like sgd & gradDescent provide similar functionality but don't have ideal ease of use or the desired flexibility. 
+Depends: R (>= 3.3.1)
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1

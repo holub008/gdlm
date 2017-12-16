@@ -3,14 +3,14 @@ Gradient Descent for Linear Models in R
 
 Perform gradient descent to build linear models and use bootstrapping to generate standard errors on estimators. Motivation for this project is that in practice, loss functions for regressions are rarely symmetric, yet most prevalent regression tools in R assume symmetry with no configurability otherwise. Goal is to provide flexibility in loss function specification combined with general ease of use associated with other linear models in R.
 ## Installation
-```
+```R
 devtools::install_git('https://github.com/holub008/gdlm')
 ```
 
 ## Examples
 ### Asymmetric loss for least squares
 Here we fit an OLS model predicting city mpg from highway mpg on the mpg dataset from ggplot:
-```
+```R
 data(mpg)
 (p1 <- ggplot(mpg) + geom_point(aes(hwy, cty)))
 
@@ -30,7 +30,7 @@ hwy         0.6832955      0.0164563 0.6570886 0.7089135
 ![mpg_ls_fit](docs/images/mpg_ls_fit.png)
 
 If we have a prediction problem where overpredictions are more heavily penalized than underpredictions, we parameterize our loss function as:
-```
+```R
 m_negative_penalty <- gdlm(cty ~ hwy, mpg, loss = LS_LOSS(loss_asymmetry = .1))
 
 p2 + geom_abline(aes(intercept = m_negative_penalty$estimators[1],
@@ -41,7 +41,7 @@ p2 + geom_abline(aes(intercept = m_negative_penalty$estimators[1],
 In practice the loss asymmetry would likely be determined through a cross validation. Note that loss asymmetry can similarly be applied to logistic loss functions.
 
 ### Elastic net regularized logistic regression
-```
+```R
 car_data <- mpg
 car_data$is_big_car <- mpg$class %in% c('suv', 'pickup', 'minivan')
 

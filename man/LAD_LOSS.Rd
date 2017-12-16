@@ -2,27 +2,13 @@
 % Please edit documentation in R/loss_functions.R
 \name{LAD_LOSS}
 \alias{LAD_LOSS}
-\title{Least absolute deviation loss}
+\title{Parameterize a quasi least absolute deviation loss function}
 \usage{
-LAD_LOSS(estimators, X, y)
+LAD_LOSS(loss_asymmetry = 0.5)
 }
 \arguments{
-\item{estimators}{coefficient estimators}
-
-\item{X}{the data on which to evaluate loss}
-
-\item{the}{responses corresponding to y}
+\item{loss_asymmetry}{parameter passed to lad_loss}
 }
 \description{
-Note that this is not a convex loss function, and so gradient descent is not guaranteed to arrive at a global minima!
-}
-\examples{
-estimators <- c(1,2)
-X <- matrix(c(1,2,3,4), nrow = 2)
-y <- c(6, 11)
-LAD_LOSS(estimators, X, y)
-
-}
-\author{
-kholub
+A convinience to create a function delegating to lad_loss
 }

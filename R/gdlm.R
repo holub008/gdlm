@@ -35,11 +35,15 @@ gdlm <- function(formula, data, loss,
                  bootstrapped_se = TRUE, bootstrap_trials = 100,
                  initial_estimators = NULL) {
   x_data <- model.matrix(formula, data)
-  y_name <- lhs.vars(formula) # todo if binary categorical, one-hot encode
+  y_name <- lhs.vars(formula)
   if (length(y_name) != 1) {
     stop('Supplied formula must have a single response term. Found ', y_data)
   }
   y_data <- data[[y_name]]
+
+  if (is.logical(y_data)) {
+    y_data <- as.integer(y_data)
+  }
 
   if (is.null(initial_estimators)) {
     initial_estimators <- rep(0, ncol(x_data))

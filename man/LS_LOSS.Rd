@@ -2,27 +2,13 @@
 % Please edit documentation in R/loss_functions.R
 \name{LS_LOSS}
 \alias{LS_LOSS}
-\title{Least squares loss function}
+\title{Parameterize a quasi least squares loss function}
 \usage{
-LS_LOSS(estimators, X, y)
+LS_LOSS(loss_asymmetry = 0.5)
 }
 \arguments{
-\item{estimators}{coefficient estimators}
-
-\item{X}{the data on which to evaluate loss}
-
-\item{the}{responses corresponding to y}
+\item{loss_asymmetry}{parameter passed to ls_loss}
 }
 \description{
-Least squares loss function
-}
-\examples{
-estimators <- c(1,2)
-X <- matrix(c(1,2,3,4), nrow = 2)
-y <- c(6, 11)
-LS_LOSS(estimators, X, y)
-
-}
-\author{
-kholub
+A convinience to create a function delegating to ls_loss
 }

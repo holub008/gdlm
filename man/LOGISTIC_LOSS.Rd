@@ -2,27 +2,13 @@
 % Please edit documentation in R/loss_functions.R
 \name{LOGISTIC_LOSS}
 \alias{LOGISTIC_LOSS}
-\title{Logistic loss function}
+\title{Parameterize a quasi logistic loss function}
 \usage{
-LOGISTIC_LOSS(estimators, X, y)
+LOGISTIC_LOSS(loss_asymmetry = 0.5)
 }
 \arguments{
-\item{estimators}{coefficient estimators}
-
-\item{X}{the data on which to evaluate loss}
-
-\item{the}{responses corresponding to y}
+\item{loss_asymmetry}{parameter passed to logistic_loss}
 }
 \description{
-Logistic loss function
-}
-\examples{
-estimators <- c(-1,1)
-X <- matrix(c(1,2,1.5,2.5), nrow = 2)
-y <- c(1, 0)
-LOGISTIC_LOSS(estimators, X, y)
-
-}
-\author{
-kholub
+A convinience to create a function delegating to logistic_loss
 }

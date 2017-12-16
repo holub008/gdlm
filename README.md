@@ -38,7 +38,19 @@ p2 + geom_abline(aes(intercept = m_negative_penalty$estimators[1],
 ```
 ![mpg_underpred_fit](docs/images/mpg_ls_underpred_fit.png)
 
-In practice the loss asymmetry would likely be determined through a cross validation. Note that loss asymmetry can similarly be applied to logistic loss functions.
+In practice the loss asymmetry would likely be determined through a cross validation. Note that loss asymmetry can similarly be applied to LAD/logistic loss functions:
+
+```R
+m_lad <- gdlm(cty ~ hwy, mpg, loss = LAD_LOSS())
+m_lad_negative_penalty <- gdlm(cty ~ hwy, mpg, loss = LAD_LOSS(loss_asymmetry = .1))
+p1 +
+  geom_abline(aes(intercept = m_lad$estimators[1], slope = m_lad$estimators[2]), color = 'blue') +
+  geom_abline(aes(intercept = m_lad_negative_penalty$estimators[1],
+                     slope = m_lad_negative_penalty$estimators[2]), color ='red') + ggtitle('Least Absolute Deviation Fits')
+```
+![mpg_lad_fits](docs/images/lad_fits.png)
+
+Note that the LAD case is quite similar to quantile regression.
 
 ### Elastic net regularized logistic regression
 ```

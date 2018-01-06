@@ -7,7 +7,7 @@
 #'
 #' @author kholub
 #' @examples
-#' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS)
+#' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
 #' summary(m)
 #'
 #' @export summary.gdlm
@@ -24,7 +24,24 @@ summary.gdlm <- function(object, ci_range = c(.05, .95), ...){
   }
 
   # todo would also be helpful to print the initial loss call
-  show(paste0("Formula: ", object$formula))
-  show("Estimators:")
-  show(final_table)
+  structure(list(formula = object$formula,
+                 estimator_summary = final_table),
+            class = 'summary.gdlm')
 }
+
+#' Print a gdlm summary
+#'
+#' @param object the summary.gdlm object to be printed
+#'
+#' @author kholub
+#' @examples
+#' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
+#' print(summary(m))
+#'
+#' @export print.summary.gdlm
+print.summary.gdlm <- function(object, ...) {
+  cat('Formula:', deparse(object$formula), '\n\n')
+  cat('Estimators:\n')
+  print(object$estimator_summary)
+}
+

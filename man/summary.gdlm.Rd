@@ -15,7 +15,7 @@
 This summary will include model details, coefficient estimates, & bootstrapped SEs and bootstrap CIs if the gdlm was constructed with boostrapping enabled
 }
 \examples{
-m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS)
+m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
 summary(m)
 
 }

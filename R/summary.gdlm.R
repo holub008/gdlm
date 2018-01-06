@@ -24,7 +24,7 @@ summary.gdlm <- function(object, ci_range = c(.05, .95), ...){
   }
 
   # todo would also be helpful to print the initial loss call
-  structure(list(formula = object$formula,
+  structure(list(formula = formula(object),
                  estimator_summary = final_table),
             class = 'summary.gdlm')
 }
@@ -45,3 +45,16 @@ print.summary.gdlm <- function(object, ...) {
   print(object$estimator_summary)
 }
 
+#' Retrieve the formula from a gdlm object
+#'
+#' @param object the gdlm object from which to retrieve a formula
+#'
+#' @author kholub
+#' @examples
+#' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
+#' print(summary(m))
+#'
+#' @export formula.gdlm
+formula.gdlm <- function(object, ...) {
+  object$formula
+}

@@ -76,14 +76,14 @@ If computing bootstrapped SEs with many trials, one may benefit by increasing th
 
 ```R
 options(mc.cores = 1)
-system.time(m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS(), 
-            bootstrap_trials = 1e4))
+system.time(gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS(), 
+                 bootstrap_trials = 1e4))
      user  system elapsed 
   145.614   6.377 152.595 
   
 options(mc.cores = 4)
-system.time(m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS(), 
-                      bootstrap_trials = 1e4))
+system.time(gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS(), 
+                 bootstrap_trials = 1e4))
      user  system elapsed 
    92.386   4.420  47.913 
 

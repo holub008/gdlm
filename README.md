@@ -21,11 +21,12 @@ summary(m)
 ```
 with results:
 ```
-[1] "Formula: cty ~ hwy"
-[1] "Esimators:"
+Formula: cty ~ hwy 
+
+Estimators:
              Estimate Standard Error        5%       95%
-(Intercept) 0.8416769      0.3737633 0.2760343 1.4903538
-hwy         0.6832955      0.0164563 0.6570886 0.7089135
+(Intercept) 0.8416769     0.33131266 0.2702470 1.3416143
+hwy         0.6832955     0.01508875 0.6613536 0.7078258
 ```
 ![mpg_ls_fit](docs/images/mpg_ls_fit.png)
 

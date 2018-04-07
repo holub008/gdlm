@@ -9,7 +9,7 @@
 #' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS)
 #' predict(m)
 #'
-#' @export predict.gdlm
+#' @export
 predict.gdlm <- function(object, newdata = NULL, type = c("working", "response"), ...){
   # todo type is ignored, not sure about best way to handle this... maybe just let the user deal with it?
   # the correct solution is probably to make loss_function a typed object that optionally includes a link function

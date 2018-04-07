@@ -7,7 +7,8 @@
 #' @examples
 #' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
 #' residuals(m)
-#' @export residuals.gdlm
+#' 
+#' @export
 residuals.gdlm <- function(object, type = c("working", "response")){
   # todo this is funky for glms
   object$response - predict(object)

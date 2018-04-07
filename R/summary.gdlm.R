@@ -10,7 +10,7 @@
 #' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
 #' summary(m)
 #'
-#' @export summary.gdlm
+#' @export
 summary.gdlm <- function(object, ci_range = c(.05, .95), ...){
   final_table <- cbind(Estimate = object$estimators)
 
@@ -38,7 +38,7 @@ summary.gdlm <- function(object, ci_range = c(.05, .95), ...){
 #' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
 #' print(summary(m))
 #'
-#' @export print.summary.gdlm
+#' @export
 print.summary.gdlm <- function(object, ...) {
   cat('Formula:', deparse(object$formula), '\n\n')
   cat('Estimators:\n')
@@ -54,7 +54,7 @@ print.summary.gdlm <- function(object, ...) {
 #' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
 #' print(summary(m))
 #'
-#' @export formula.gdlm
+#' @export
 formula.gdlm <- function(object, ...) {
   object$formula
 }

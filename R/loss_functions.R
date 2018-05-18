@@ -65,8 +65,12 @@ lad_loss <- function(estimators, X, y, loss_asymmetry = .5) {
   mean(loss_scaling * abs(errors))
 }
 
-sigmoid <- function(x){
-  1 / (1 + exp(-x))
+sigmoid <- function(x,
+                    epsilon = 1e-10){
+  result <- 1 / (1 + exp(-x))
+  
+  # perturb the result slightly in the event of 0/1 numerical probabilities
+  pmax(epsilon, pmin(1 - epsilon, result))
 }
 
 #' Parameterize a quasi least absolute deviation loss function
@@ -99,7 +103,8 @@ LAD_LOSS <- function(loss_asymmetry = .5) {
 #' logistic_loss(estimators, X, y)
 #'
 #' @export logistic_loss
-logistic_loss <- function(estimators, X, y, loss_asymmetry = .5){
+logistic_loss <- function(estimators, X, y, loss_asymmetry = .5,
+                          epsilon = 1e-10){
   predictions <- sigmoid(X %*% estimators)
   mean(loss_asymmetry * -y * log(predictions) -
          (1 - loss_asymmetry) * (1 - y) * log(1 - predictions))

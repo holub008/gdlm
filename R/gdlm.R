@@ -1,11 +1,44 @@
-gd_fit <- function(x_data, y_data, loss, initial_estimators) {
-  # todo optim may not be the best choice, but it does reduce dependencies. using for now
-  # https://www.r-bloggers.com/why-optim-is-out-of-date/
-  # additionally need to consider our method more carefully (e.g. stochastic gd)
-  estimates <- as.list(optim(par = initial_estimators, X = x_data, y = y_data, fn = loss)$par)
-  names(estimates) <- colnames(x_data)
-
-  estimates
+gd_fit <- function(x_data, y_data, loss, gradient, initial_estimators,
+                   step_size = .01, # todo both of these args 
+                   max_iter = 5000) {
+  if (is.null(gradient)) {
+    # todo optim may not be the best choice, but it does reduce dependencies. using for now
+    # https://www.r-bloggers.com/why-optim-is-out-of-date/
+    # additionally need to consider our method more carefully (e.g. stochastic gd)
+    estimates <- as.list(optim(par = initial_estimators, X = x_data, y = y_data, fn = loss)$par)
+    names(estimates) <- colnames(x_data)
+  
+    return(estimates)
+  }
+  else {
+    # todo this is the most  implementation
+    # set up a stepsize
+    alpha = 0.003
+    
+    # set up a number of iteration
+    iter = 500
+    
+    # define the gradient of f(x) = x^4 - 3*x^3 + 2
+    gradient = function(x) return((4*x^3) - (9*x^2))
+    
+    # randomly initialize a value to x
+    set.seed(100)
+    x = floor(runif(1)*10)
+    
+    # create a vector to contain all xs for all steps
+    x.All = vector("numeric",iter)
+    
+    # gradient descent method to find the minimum
+    for(i in 1:iter){
+      x = x - alpha*gradient(x)
+      x.All[i] = x
+      print(x)
+    }
+    
+    # print result and plot all xs for every iteration
+    print(paste("The minimum of f(x) is ", x, sep = ""))
+    plot(x.All, type = "l")
+  }
 }
 
 #' Fit a linear model using an arbitrary loss function
@@ -14,10 +47,12 @@ gd_fit <- function(x_data, y_data, loss, initial_estimators) {
 #' Optionally generate bootstrapped standard errors & confidence intervals for estimators.
 #' @note It is left to the user to consider the convexity of the summed loss function. For non-convex loss, gradient descent methods may not be generally appropriate.
 #' @note The user can control the parallelism of bootstrapping by setting
+#' @note The loss and gradient arguments are currently mutually exclusive, although some gradient descent methods can take advantage of them simultaneously. This may be subject to change in the future.
 #'
 #' @param formula the form of the linear model to be fit
 #' @param data the dataset used to fit the model
-#' @param loss a function accepting a vector of parameter estimators, a matrix of training data, and a vector of responses
+#' @param loss a function accepting a vector of parameter estimators, a matrix of training data, and a vector of responses. represents the loss at the current model parameterization
+#' @param gradient a function accepting a vector of parameter estimators, a matrix of training data, and a vector of repsonses. represents the gradient of the loss at the current model parameterization 
 #' @param bootstrapped_se whether to perform bootstrapping to generate standard errors and confidence intervals
 #' @param boostrap_trials how many bootstrap trials to perform
 #' @param initial_estimators the starting fit used by gradient descent. default is zeros
@@ -32,6 +67,7 @@ gd_fit <- function(x_data, y_data, loss, initial_estimators) {
 #'
 #' @export gdlm
 gdlm <- function(formula, data, loss,
+                 gradient = NULL,
                  bootstrapped_se = TRUE, bootstrap_trials = 100,
                  initial_estimators = NULL) {
   x_data <- model.matrix(formula, data)
@@ -39,6 +75,10 @@ gdlm <- function(formula, data, loss,
   if (length(y_name) != 1) {
     stop('Supplied formula must have a single response term. Found ', y_data)
   }
+  else if (is.null(loss) && is.null(gradient)) {
+    stop('Must specify one of the loss function or its gradient.')
+  }
+  
   y_data <- data[[y_name]]
 
   if (is.logical(y_data)) {
@@ -63,7 +103,7 @@ gdlm <- function(formula, data, loss,
     colnames(trial_estimators) <- colnames(x_data)
   }
 
-  estimators <- unlist(gd_fit(x_data, y_data, loss, initial_estimators))
+  estimators <- unlist(gd_fit(x_data, y_data, loss, gradient, initial_estimators))
 
   structure(list(estimators = estimators,
                  formula = formula,

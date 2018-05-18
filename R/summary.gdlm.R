@@ -52,9 +52,23 @@ print.summary.gdlm <- function(object, ...) {
 #' @author kholub
 #' @examples
 #' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
-#' print(summary(m))
+#' formula(m)
 #'
 #' @export
 formula.gdlm <- function(object, ...) {
   object$formula
+}
+
+#' Retrieve the fitted parameters for a gdlm
+#'
+#' @param object the gdlm object from which to retrieve a parameters
+#'
+#' @author kholub
+#' @examples
+#' m <- gdlm(Sepal.Width ~ Species * Petal.Width + Petal.Length, data = iris, loss = LS_LOSS())
+#' coef(m)
+#'
+#' @export
+coef.gdlm <- function(object, ...) {
+  object$estimators
 }

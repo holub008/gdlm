@@ -4,8 +4,8 @@
 \alias{gdlm}
 \title{Fit a linear model using an arbitrary loss function}
 \usage{
-gdlm(formula, data, loss, gradient = NULL, bootstrapped_se = TRUE,
-  bootstrap_trials = 100, initial_estimators = NULL)
+gdlm(formula, data, loss, bootstrapped_se = TRUE, bootstrap_trials = 100,
+  initial_estimators = NULL)
 }
 \arguments{
 \item{formula}{the form of the linear model to be fit}
@@ -13,8 +13,6 @@ gdlm(formula, data, loss, gradient = NULL, bootstrapped_se = TRUE,
 \item{data}{the dataset used to fit the model}
 
 \item{loss}{a function accepting a vector of parameter estimators, a matrix of training data, and a vector of responses. represents the loss at the current model parameterization}
-
-\item{gradient}{a function accepting a vector of parameter estimators, a matrix of training data, and a vector of repsonses. represents the gradient of the loss at the current model parameterization}
 
 \item{bootstrapped_se}{whether to perform bootstrapping to generate standard errors and confidence intervals}
 

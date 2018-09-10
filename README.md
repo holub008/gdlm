@@ -1,7 +1,7 @@
 # gdlm
 Gradient Descent for Linear Models in R
 
-Perform gradient descent to build linear models and use bootstrapping to generate standard errors on estimators. Motivation for this project is that in practice, loss functions for regressions are rarely symmetric, yet most prevalent regression tools in R assume symmetry with no configurability otherwise. Goal is to provide flexibility in loss function specification combined with general ease of use associated with other linear models in R.
+Perform gradient descent to build linear models and use bootstrapping to generate standard errors on estimators. Goal is to provide flexibility in loss function specification combined with general ease of use associated with other linear models in R.
 ## Installation
 ```R
 devtools::install_git('https://github.com/holub008/gdlm')
@@ -30,7 +30,7 @@ hwy         0.6832955     0.01508875 0.6613536 0.7078258
 ```
 ![mpg_ls_fit](docs/images/mpg_ls_fit.png)
 
-If we have a prediction problem where overpredictions are more heavily penalized than underpredictions, we parameterize our loss function as:
+If we have a prediction problem where overpredictions are more heavily penalized than underpredictions, we may parameterize our loss function as:
 ```R
 m_negative_penalty <- gdlm(cty ~ hwy, mpg, loss = LS_LOSS(loss_asymmetry = .1))
 
@@ -39,7 +39,7 @@ p2 + geom_abline(aes(intercept = m_negative_penalty$estimators[1],
 ```
 ![mpg_underpred_fit](docs/images/mpg_ls_underpred_fit.png)
 
-In practice the loss asymmetry would likely be determined through a cross validation. Note that loss asymmetry can similarly be applied to LAD/logistic loss functions:
+In practice the loss asymmetry would likely be determined by business . Loss asymmetry can similarly be applied to LAD/logistic loss functions:
 
 ```R
 m_lad <- gdlm(cty ~ hwy, mpg, loss = LAD_LOSS())
@@ -51,9 +51,10 @@ p1 +
 ```
 ![mpg_lad_fits](docs/images/lad_fits.png)
 
-Note that the LAD case is quite similar to quantile regression.
+Note that the LAD case is quite similar to a quantile regression.
 
-### Elastic net regularized logistic regression
+### Regularized logistic regression (ridge penalty)
+Ridge regression is a convex problem, so we may use gradient descent to find the unique optimal parameterization. LASSO/elastic net regularization are configurable, but do not necessarily lead to a globally optimal parameterization.
 ```R
 car_data <- mpg
 car_data$is_big_car <- mpg$class %in% c('suv', 'pickup', 'minivan')
@@ -65,7 +66,7 @@ log_odds <- predict(m_log)
 ggplot() + geom_histogram(aes(log_odds, fill = car_data$is_big_car))
 
 m_log_shrunk <- gdlm(is_big_car ~ hwy, car_data,
-                     loss = compose_regularization(LOGISTIC_LOSS(), elastic_net_parameter = .5, lambda = 1e-3))
+                     loss = compose_regularization(LOGISTIC_LOSS(), elastic_net_parameter = 0, lambda = 1e-3))
 summary(m_log_shrunk)
 
 log_odds <- predict(m_log_shrunk)
